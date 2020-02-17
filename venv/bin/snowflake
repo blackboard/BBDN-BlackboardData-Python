@@ -1,0 +1,38 @@
+#!/Users/shurrey/Documents/workspace/blackboard-data/Blackboard Data Demo/venv/bin/python3.7
+import argparse
+
+import snowflake
+
+parser = argparse.ArgumentParser(description="Generate IDs for a system that are as unique as a snowflake (they're just persistent UUIDs). Run with no arguments, simply prints the system's snowflake ID.",
+                                 epilog="The snowflake ID should be generated for the system when this package is installed. You can use this tool to generate an ID if for some reason one doesn't exist.")
+parser.add_argument('-f', '--file', action='store', dest='sn_file', default=snowflake.SNOWFLAKE_FILE,
+                    help="Use specified file to store id (default: %s)" % snowflake.SNOWFLAKE_FILE)
+parser.add_argument('-m', '--make-snowflake', action='store_true', dest='make_snowflake',
+                    help="Make a snowflake ID if one doesn't exist. If one already does, this does nothing, so it's always safe to use.")
+parser.add_argument('--force-new-key', action='store_true', dest='force_new',
+                    help="Force generation of new ID. WARNING: Deletes existing ID.")
+args = parser.parse_args()
+
+snowflake_file = args.sn_file
+
+try:
+    if args.force_new:
+        print("WARNING! Forcing me to create new snowflake ID. Old snowflake ID was '%s'" % snowflake.snowflake(snowflake_file))
+        snowflake._write_new_id(snowflake_file)
+    if args.make_snowflake:
+            snowflake.make_snowflake(snowflake_file)
+
+    id_ = snowflake.snowflake(snowflake_file)
+    if id_ is None:
+        print("Couldn't find a snowflake ID in '%s'. Try running with the -m option to make one." % snowflake_file)
+        exit(2)
+    else:
+        print(id_)
+        exit(0)
+
+except IOError as e:
+    if e.errno == 13: # permission denied
+        print("Permission denied when accessing '%s'. If you're making the snowflake for the first time for the system, try running this as root." % snowflake_file)
+        exit(1)
+    else:
+        raise e
