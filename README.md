@@ -40,48 +40,66 @@ where attended_duration > 0
 ```
 select
   grade_band,
-  avg(total_duration_sum)/60 as avg_course_minutes,
-  avg(total_interaction_cnt) as avg_course_interactions,
-  avg(course_access_cnt) as avg_course_accesses,
-  avg(clb_duration_sum)/60 as avg_collab_minutes,
-  avg(clb_access_cnt) as avg_collab_accesses
-from(
- select
-   scs.class_section_id as course_id,
-   sst.person_id,
-   scs.grade_points,
-   ceil(grade_points,0) as grade_band,
-   sum(lca.duration_sum) as total_duration_sum,
-   sum(lca.interaction_cnt) as total_interaction_cnt,
-   count(lca.ID) as course_access_cnt,
-   sum(ca.duration)/1000 as clb_duration_sum,
-   count(ca.ID) as clb_access_cnt
- from cdm_sis.student_term_class_section scs
-   inner join cdm_sis.student_term sst
-     on sst.id = scs.student_term_id
-   inner join cdm_sis.class_section sc
-     on sc.id = scs.class_section_id
-   inner join cdm_map.person mp
-     on mp.sis_person_id = sst.person_id
-   inner join cdm_map.course mc
-     on mc.sis_course_id = scs.class_section_id
-   inner join cdm_lms.course_activity lca
-     on lca.person_id = mp.lms_person_id
-     and lca.course_id = mc.lms_course_id
-   inner join cdm_sis.term st
-     on st.ID = sst.term_id
-   inner join cdm_map.course_room mcr
-     on mcr.lms_course_id = lca.course_id
-   left join cdm_clb.session cs
-     on cs.room_id = mcr.clb_room_id
-   left join cdm_clb.attendance ca
-     on ca.session_id = cs.id
-     and ca.person_id = mp.clb_person_id
- group by
-   scs.class_section_id,
-   sst.person_id,
-   scs.grade_points
-) a
+  round(avg(ns_clean),2) as avg_grade,
+  round(avg(total_duration_sum)/60,0) as avg_course_minutes,
+  round(avg(total_interaction_cnt),0) as avg_course_interactions,
+  round(avg(course_access_cnt),0) as avg_course_accesses,
+  round(avg(clb_duration_sum)/60,0) as avg_collab_minutes,
+  round(avg(clb_access_cnt),2) as avg_collab_accesses
+from 
+( -- SUMMARIZE COURSE ACTIVITY
+    select
+        person_course_id,
+        course_id,
+        person_id,
+        sum(duration_sum) as total_duration_sum,
+        sum(interaction_cnt) as total_interaction_cnt,
+        count(id) as course_access_cnt
+    from cdm_lms.course_activity
+    group by
+        person_course_id,
+        course_id,
+        person_id
+) lms
+inner join 
+( -- SUMMARIZE COLLABORATE ACTIVITY
+    select
+        mcr.lms_course_id,
+        mp.lms_person_id,
+        sum(ca.duration) as clb_duration_sum,
+        count(ca.id) as clb_access_cnt
+    from cdm_clb.attendance ca
+    inner join cdm_clb.session cs
+        on ca.session_id = cs.id
+    inner join cdm_map.course_room mcr
+        on cs.room_id = mcr.clb_room_id
+    inner join cdm_map.person mp
+        on mp.clb_person_id = ca.person_id
+    group by
+        mcr.lms_course_id,
+        mp.lms_person_id
+) clb
+    on clb.lms_course_id = lms.course_id
+    and clb.lms_person_id = lms.person_id
+inner join 
+( -- GET TOTAL COURSE GRADE
+  select
+      lg.person_course_id as lpc_id,
+      lg.normalized_score,
+      case 
+          when lg.normalized_score > 1 then 1 
+          when lg.normalized_score < 0 then 0
+          else lg.normalized_score 
+      end as ns_clean,
+      ntile(4) over (order by ns_clean) as grade_band
+  from cdm_lms.grade lg
+  inner join cdm_lms.gradebook lgb
+      on lg.gradebook_id = lgb.id
+      and lgb.final_grade_ind = 1
+      and deleted_ind = 0
+  where normalized_score is not null
+) grd
+    on grd.lpc_id = lms.person_course_id
 group by grade_band
 order by grade_band
 ```
@@ -93,6 +111,7 @@ This project was built with Python 3.7. Other versions may work, but have not be
 * Snowflake Python Connector
 * Snowflake Python Connecter Pandas Updates
 * Pandas
+* Matplotlib
 
 To install the libraries, use `pip`:
 
@@ -109,6 +128,10 @@ pip install "snowflake-connector-python[pandas]"
 # Install Pandas
 
 pip install --upgrade pandas
+
+# Install matplotlib
+
+pip install --upgrade matplotlib
 ```
 
 The next step is to set up your configuration. You will see the file _ConfigTemplate.py_. Copy this file to _Config.py_ and edit your settings. You will need your username and password for logging into Snowflake, the account ID, and the Warehouse and Database names. To find your account ID, simply look at your snowflake URL. It will be something like https://12345.snowflakecomputing.com. 12345 is your account number.
