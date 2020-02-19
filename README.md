@@ -2,7 +2,7 @@
 
 This project contains three sample scripts to run queries against Blackboard Data, pull them into Pandas Dataframes, and export the data to CSV files. In these samples, we have three queries:
 
-* Time Spent In Learn
+* **Time Spent In Learn**
 
 ```
 select
@@ -23,7 +23,7 @@ group by
    month(first_accessed_time
 ```
 
-* Time Spent In Collab
+* **Time Spent In Collab**
 
 ```
 select
@@ -35,7 +35,7 @@ from cdm_clb.session
 where attended_duration > 0
 ```
 
-* Activity Equals Success
+* **Activity Equals Success**
 
 ```
 select

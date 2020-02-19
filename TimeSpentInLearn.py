@@ -39,7 +39,7 @@ try:
 
     print(df.head())
 
-    df.to_csv(outfile)
+    df.to_csv(outfile, index=False)
     
 finally:
     cs.close()
