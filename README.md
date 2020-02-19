@@ -106,7 +106,7 @@ order by grade_band
 
 ## Setting Up Your Environment
 
-This project was built with Python 3.7. Other versions may work, but have not been tested. The project itself requires three Python Libraries:
+This project was built with Python 3.7. Other versions may work, but have not been tested. The project itself requires four Python Libraries:
 
 * Snowflake Python Connector
 * Snowflake Python Connecter Pandas Updates
