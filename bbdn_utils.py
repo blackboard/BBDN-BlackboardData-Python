@@ -36,7 +36,7 @@ def run_query(query_name, config=None):
 
     try:
         data = pd.read_sql(sql, ctx)
-        # TODO: Fix this for later, user read_sql() for now
+        # TODO: Fix this for later, use read_sql() for now
         # fetch_pandas_all() causing segfault on linux....???
         # 1]    32279 segmentation fault (core dumped)  python3 ./bbdn_utils.py
         # print(data)
