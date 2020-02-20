@@ -19,5 +19,12 @@ app_config = {
             'outfile': './output/Verify.csv',
             'index': False
         }
+    },
+    'activityEqualsSuccess': {
+        'params': None,
+        'config': {
+            'outfile': './output/ActivityEqualsSuccess.csv',
+            'index': False
+        }
     }
 }
