@@ -134,7 +134,7 @@ pip install --upgrade pandas
 pip install --upgrade matplotlib
 ```
 
-Or you can use the requirements.txt instal method. This can be done either in your virvenv or on your system python3 version.
+Or you can use the requirements.txt install method. This can be done either in your virvenv or on your system python3 version.
 
 ```
 python3 -m pip install --user -r ./requirements.txt
