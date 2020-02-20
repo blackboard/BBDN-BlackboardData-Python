@@ -3,23 +3,24 @@ import snowflake.connector
 import pandas as pd
 import Config as cfg
 
-query = "select "
-query += "lp.last_name, "
-query += "lp.first_name, "
-query += "lsa.person_id, "
-query += "month(first_accessed_time) as month, "
-query += "round(sum(duration_sum)/60,0) as duration_minutes "
-query += "from cdm_lms.session_activity lsa "
-query += "inner join cdm_lms.person lp "
-query += "on lp.id = lsa.person_id "
-query += "where "
-query += "year(first_accessed_time) = 2018 "
-query += "group by "
-query += "lp.last_name, "
-query += "lp.first_name, "
-query += "lsa.person_id, "
-query += "month(first_accessed_time) "
-query += ";"
+query = """
+select
+   lp.last_name,
+   lp.first_name,
+   lsa.person_id,
+   month(first_accessed_time) as month,
+   round(sum(duration_sum)/60,0) as duration_minutes
+from cdm_lms.session_activity lsa
+inner join cdm_lms.person lp
+   on lp.id = lsa.person_id
+where
+   year(first_accessed_time) = 2018
+group by
+   lp.last_name,
+   lp.first_name,
+   lsa.person_id,
+   month(first_accessed_time)
+"""
 
 outfile = "timeSpentInLearn.csv"
 
