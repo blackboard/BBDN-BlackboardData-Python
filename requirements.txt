@@ -1,0 +1,4 @@
+pandas
+snowflake-connector-python
+matplotlib
+snowflake-connector-python[pandas]
