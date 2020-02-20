@@ -55,7 +55,8 @@ def run_query(query_name, config=None):
 
 
 if __name__ == "__main__":
-    # run_query('current-version')
+    run_query('current-version')
     # run_query('current-version', app_config['currentVersion'])
     # run_query('time-spent-in-learn', app_config['timeSpentInLearn'])
-    run_query('time-spent-in-collab', app_config['timeSpentInCollab'])
+    # run_query('time-spent-in-collab', app_config['timeSpentInCollab'])
+    # run_query('activity-equals-success', app_config['activityEqualsSuccess'])
