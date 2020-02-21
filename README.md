@@ -112,6 +112,7 @@ This project was built with Python 3.7. Other versions may work, but have not be
 -   Snowflake Python Connecter Pandas Updates
 -   Pandas
 -   Matplotlib
+-   pyarrow (peer dependency and may need to be installed)
 
 To install the libraries, use `pip`:
 
