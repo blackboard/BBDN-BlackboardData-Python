@@ -86,7 +86,9 @@ try:
     cs.execute(query)
 
     # Fetch the result set from the cursor and deliver it as the Pandas DataFrame.
-    df = cs.fetch_pandas_all()
+    # df = cs.fetch_pandas_all()
+    # TODO: fix this later, switched to pd.read_sql as fetch_pandas_all() causes segfault on linux
+    df = pd.read_sql(query, ctx)
 
     print(df.head())
 
