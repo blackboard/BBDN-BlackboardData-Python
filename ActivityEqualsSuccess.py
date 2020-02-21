@@ -78,7 +78,8 @@ ctx = snowflake.connector.connect(
     password=cfg.sfconcfg['password'],
     account=cfg.sfconcfg['account'],
     warehouse=cfg.sfconcfg['warehouse'],
-    database=cfg.sfconcfg['database']
+    database=cfg.sfconcfg['database'],
+    insecure_mode=cfg.sfconcfg['insecure_mode']
 )
 cs = ctx.cursor()
 try:
