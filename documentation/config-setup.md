@@ -12,4 +12,4 @@ You can also run the demo to let it run all demo queries and see them in action 
 python3 ./Demo.py
 ```
 
-Please go here to the next step: Running verify.py
+Please go here to the next step: [Running verify.py](/documentation/running-verify.md)
