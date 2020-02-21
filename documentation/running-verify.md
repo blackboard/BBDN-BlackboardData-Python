@@ -12,7 +12,7 @@ This query returns the current version of your Bb Data Snowflake instance. The r
 
 ## Why having this script could be useful?
 
-You maybe in the need to know what version of Snowflake is running in order to make sure that any third party integrations have been prepped to the changes that could be made from a previous version of Snowflake. Or, you maybe looking to documentation and not sure which version you are running these scripts against.
+You maybe in the need to know what version of Snowflake is running in order to make sure that any third party integrations have been prepped to the changes that could be made from a previous version of Snowflake. Or, you maybe looking for documentation and not sure which version you are running these scripts against.
 
 ## How do you run this script?
 
