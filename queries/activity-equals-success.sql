@@ -1,10 +1,3 @@
-#!/usr/bin/env python
-import snowflake.connector
-import pandas as pd
-from matplotlib import pyplot as plt
-import Config as cfg
-
-query = """
 select
   grade_band,
   round(avg(ns_clean),2) as avg_grade,
@@ -69,34 +62,3 @@ inner join
     on grd.lpc_id = lms.person_course_id
 group by grade_band
 order by grade_band
-"""
-
-outfile = "activityEqualsSuccess.csv"
-
-ctx = snowflake.connector.connect(
-    user=cfg.sfconcfg['user'],
-    password=cfg.sfconcfg['password'],
-    account=cfg.sfconcfg['account'],
-    warehouse=cfg.sfconcfg['warehouse'],
-    database=cfg.sfconcfg['database'],
-    insecure_mode=cfg.sfconcfg['insecure_mode']
-)
-cs = ctx.cursor()
-try:
-    cs.execute(query)
-
-    # Fetch the result set from the cursor and deliver it as the Pandas DataFrame.
-    df = cs.fetch_pandas_all()
-
-    print(df.head())
-
-    df.to_csv(outfile)
-
-    pd.plotting.parallel_coordinates(
-        df, 'GRADE_BAND',
-        color=('#556270', '#4ECDC4', '#C7F464', '#FF0000'))
-    plt.show()
-
-finally:
-    cs.close()
-ctx.close()

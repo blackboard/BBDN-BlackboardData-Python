@@ -134,7 +134,7 @@ pip install --upgrade pandas
 pip install --upgrade matplotlib
 ```
 
-Or you can use the requirements.txt install method. This can be done either in your virvenv or on your system python3 version.
+Or you can use the requirements.txt install method. This can be done either in your venv (virutal environment) or on your system python3 version.
 
 ```
 python3 -m pip install --user -r ./requirements.txt
@@ -145,3 +145,9 @@ The next step is to set up your configuration. You will see the file _ConfigTemp
 To verify your settings, run `python verify.py`. This will print out the version of Snowflake you are running.
 
 Assuming the verification works, you can simply run the three scripts by typing python followed by the file name.
+
+You can also run the demo to let it run all demo queries and see them in action using the bbdn_utils module:
+
+```
+python3 ./Demo.py
+```
