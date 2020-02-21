@@ -16,7 +16,7 @@ You maybe in the need to know what version of Snowflake is running in order to m
 
 ## How do you run this script?
 
-You can run this script by accessing you terminal of choice (command prompt or PowerShell for Windows users. There is also another option for Windows users call Cmder as well as using Git's integrated bash features.)
+You can run this script by accessing your terminal of choice (command prompt or PowerShell for Windows users. There is also another option for Windows users call Cmder as well as using Git's integrated bash features.)
 
 Once in your terminal enter the following:
 
