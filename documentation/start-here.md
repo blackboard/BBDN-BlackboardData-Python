@@ -37,4 +37,4 @@ Or you can use the requirements.txt install method. This can be done either in y
 python3 -m pip install --user -r ./requirements.txt
 ```
 
-Please view the next step: Setting up your Config.py
+Please view the next step: [Setting up your Config.py](/documentation/config-setup.py)
